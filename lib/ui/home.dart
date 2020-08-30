@@ -19,6 +19,7 @@ import 'package:flutter_redux_cascading_select/models/order/category.dart';
 
 // Widgets
 import 'package:flutter_redux_cascading_select/widgets/redux_dropdown_stateless.dart';
+import 'package:flutter_redux_cascading_select/widgets/redux_dropdown_store_connector.dart';
 
 class Home extends StatefulWidget {
 
@@ -45,40 +46,70 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            StoreConnector<AppState, OrderCategoryState>(
-              distinct: true,
-              converter: (store) => store.state.orderState.orderCategoryState,
-              builder: (BuildContext context, OrderCategoryState orderCategoryState){
-                print("Categories -> " + orderCategoryState.categories.toString());
+            /*
+              ******  BUG NOTE  *****
+              Working on this component but in this moment it doesn't works
+              If you decommented these lines (and commented the others lines below)
+              you can test it.
+              For now I don't understand the difference between these two solutions
+              the second one works fine.
+              The first one fullfill the dropdowns correctly but if you select
+              an element in the dropdown and you follow the flow of data you can
+              view that the stateToObserveForElement in the widget
+              reduxDropDownStateless appears correctly instanciated
+              before the selection and change to null after the dispatch of the
+              action SetOrderCascadingId
+            */
+
+            /*
+            ReduxDropDownStoreConnector<Category>(
+                stateToObserveForList: store.state.orderState.orderCategoryState.categories,
+                stateToObserveForElement: store.state.orderState.orderCategoryState.category
+            ),
+            ReduxDropDownStoreConnector<SubCategory>(
+                stateToObserveForList: store.state.orderState.orderSubCategoryState.subCategories,
+                stateToObserveForElement: store.state.orderState.orderSubCategoryState.subCategory
+            ),
+            ReduxDropDownStoreConnector<Product>(
+                stateToObserveForList: store.state.orderState.orderProductState.products,
+                stateToObserveForElement: store.state.orderState.orderProductState.product
+            ),
+            */
+            StoreConnector<AppState, List<Category>>(
+              distinct: false,
+              converter: (store) => store.state.orderState.orderCategoryState.categories,
+              builder: (BuildContext context, List<Category> categories){
+                print("Categories -> " + categories.toString());
                 List<DropDownItem<Category>> _items = [];
-                for (Category category in orderCategoryState.categories) {
+                for (Category category in categories) {
                   _items.add(DropDownItem(category.id, category.description));
                 }
-                return ReduxDropDownStateless(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderCategoryState.category, typeOfObject: Category);
+                print("list of items -> " + _items.toString());
+                return ReduxDropDownStateless<Category>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderCategoryState.category);
               }
             ),
-            StoreConnector<AppState, OrderSubCategoryState>(
-              distinct: true,
-              converter: (store) => store.state.orderState.orderSubCategoryState,
-              builder: (BuildContext context, OrderSubCategoryState orderSubCategoryState){
-                print("SubCategories -> " + orderSubCategoryState.subCategories.toString());
+            StoreConnector<AppState, List<SubCategory>>(
+              distinct: false,
+              converter: (store) => store.state.orderState.orderSubCategoryState.subCategories,
+              builder: (BuildContext context, List<SubCategory> subCategories){
+                print("SubCategories -> " + subCategories.toString());
                 List<DropDownItem<SubCategory>> _items = [];
-                for (SubCategory subCategory in orderSubCategoryState.subCategories) {
+                for (SubCategory subCategory in subCategories) {
                   _items.add(DropDownItem(subCategory.id, subCategory.description));
                 }
-                return ReduxDropDownStateless(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderSubCategoryState.subCategory, typeOfObject: SubCategory);
+                return ReduxDropDownStateless<SubCategory>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderSubCategoryState.subCategory);
               }
             ),
-            StoreConnector<AppState, OrderProductState>(
-              distinct: true,
-              converter: (store) => store.state.orderState.orderProductState,
-              builder: (BuildContext context, OrderProductState orderProductState){
-                print("Products -> " + orderProductState.products.toString());
+            StoreConnector<AppState, List<Product>>(
+              distinct: false,
+              converter: (store) => store.state.orderState.orderProductState.products,
+              builder: (BuildContext context, List<Product> products){
+                print("Products -> " + products.toString());
                 List<DropDownItem<Product>> _items = [];
-                for (Product product in orderProductState.products) {
+                for (Product product in products) {
                   _items.add(DropDownItem(product.id, product.description));
                 }
-                return ReduxDropDownStateless(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderProductState.product, typeOfObject: Product);
+                return ReduxDropDownStateless<Product>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderProductState.product);
               }
             )
           ],

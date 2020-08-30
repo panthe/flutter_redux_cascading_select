@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-// Redux
+// Helper
+import 'package:flutter_redux_cascading_select/helper/common_helper.dart';
 
+// Redux
 import 'package:flutter_redux_cascading_select/redux/app/app_state.dart';
 import 'package:flutter_redux_cascading_select/redux/keys.dart';
 import 'package:flutter_redux_cascading_select/redux/order/order_actions.dart';
@@ -17,18 +19,22 @@ class ReduxDropDownStateless<T extends CascadingInterface> extends StatelessWidg
   final List<DropDownItem> dropDownItems;
   final DropDownItem preselectedItem;
   final dynamic stateToObserve;
-  final Type typeOfObject;
 
-  ReduxDropDownStateless({Key key, this.dropDownItems, this.preselectedItem, this.stateToObserve, this.typeOfObject}) : super(key: key);
+  ReduxDropDownStateless({
+    Key key,
+    this.dropDownItems,
+    this.preselectedItem,
+    this.stateToObserve
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     print("build DropDown");
     return StoreConnector<AppState, T>(
       distinct: true,
-      converter: (store) => cast<T>(stateToObserve),
-      builder: (BuildContext context, T elementModel){
-        print(typeOfObject.toString() + " id " + elementModel?.id.toString());
+      converter: (store) => CommonHelper.cast<T>(stateToObserve),
+      builder: (BuildContext context, T element){
+        print(T.toString() + " id " + element?.id.toString());
         return LayoutBuilder(
           builder: (context, constraints) {
             return Container(
@@ -40,12 +46,12 @@ class ReduxDropDownStateless<T extends CascadingInterface> extends StatelessWidg
               ),
               child: DropdownButton<DropDownItem>(
                   isExpanded: true,
-                  hint: Text("Select " + typeOfObject.toString()),
-                  value: (elementModel == null) ? preselectedItem : dropDownItems.firstWhere((el) => el.value == elementModel.id) ,
+                  hint: Text("Select " + T.toString()),
+                  value: (element == null) ? preselectedItem : dropDownItems.firstWhere((el) => el.value == element.id) ,
                   items: _createDropDownItems(dropDownItems),
                   onChanged: (el) {
-                    store.dispatch(SetResetCascadingOrderFrom(obj: typeOfObject));
-                    store.dispatch(SetOrderCascadingId(obj: typeOfObject, id: el.value));
+                    store.dispatch(SetResetCascadingOrderFrom(obj: T));
+                    store.dispatch(SetOrderCascadingId(obj: T, id: el.value));
                   }
               )
             );
@@ -68,5 +74,3 @@ class ReduxDropDownStateless<T extends CascadingInterface> extends StatelessWidg
     return items;
   }
 }
-
-T cast<T>(x) => x is T ? x : null;

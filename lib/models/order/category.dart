@@ -1,7 +1,7 @@
 // Models
 import 'package:flutter_redux_cascading_select/models/cascading_interface.dart';
 
-class Category implements CascadingInterface {
+class Category extends CascadingInterface {
   int id;
   String description;
 

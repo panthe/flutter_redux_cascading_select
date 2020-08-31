@@ -1,5 +1,4 @@
 import 'package:flutter_redux_cascading_select/redux/app/app_state.dart';
-import 'package:flutter_redux_cascading_select/redux/order/category/order_category_vm.dart';
 import 'package:redux/redux.dart';
 
 import 'order/category.dart';

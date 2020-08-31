@@ -21,3 +21,11 @@ Product
 
 The choice of a Category influences the set of subcategories that the user can choose and the choice
 of a SubCategory influences the set of products that the user can choose.
+
+Thanks for the support and for the debugging!
+
+Contributors
+
+[![](https://github.com/magicleon94.png?size=50)](https://github.com/magicleon94)]
+
+https://github.com/magicleon94

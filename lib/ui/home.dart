@@ -1,28 +1,15 @@
 // Packages
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
-// Redux
+import 'package:flutter_redux_cascading_select/models/order/category.dart';
+import 'package:flutter_redux_cascading_select/models/order/product.dart';
+import 'package:flutter_redux_cascading_select/models/order/subcategory.dart';
 import 'package:flutter_redux_cascading_select/redux/app/app_state.dart';
 import 'package:flutter_redux_cascading_select/redux/keys.dart';
 import 'package:flutter_redux_cascading_select/redux/order/category/order_category_actions.dart';
-import 'package:flutter_redux_cascading_select/redux/order/category/order_category_state.dart';
-import 'package:flutter_redux_cascading_select/redux/order/product/order_product_state.dart';
-import 'package:flutter_redux_cascading_select/redux/order/subcategory/order_subcategory_state.dart';
-
-// Models
-import 'package:flutter_redux_cascading_select/models/dropdown_item.dart';
-import 'package:flutter_redux_cascading_select/models/order/product.dart';
-import 'package:flutter_redux_cascading_select/models/order/subcategory.dart';
-import 'package:flutter_redux_cascading_select/models/order/category.dart';
-
-
-// Widgets
-import 'package:flutter_redux_cascading_select/widgets/redux_dropdown_stateless.dart';
 import 'package:flutter_redux_cascading_select/widgets/redux_dropdown_store_connector.dart';
 
 class Home extends StatefulWidget {
-
   @override
   _HomeState createState() => _HomeState();
 }
@@ -38,7 +25,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -61,61 +47,70 @@ class _HomeState extends State<Home> {
               action SetOrderCascadingId
             */
 
-            /*
             ReduxDropDownStoreConnector<Category>(
-                stateToObserveForList: store.state.orderState.orderCategoryState.categories,
-                stateToObserveForElement: store.state.orderState.orderCategoryState.category
+              stateToObserveForList:
+                  store.state.orderState.orderCategoryState.categories,
+              stateToObserveForElement:
+                  store.state.orderState.orderCategoryState.category,
             ),
             ReduxDropDownStoreConnector<SubCategory>(
-                stateToObserveForList: store.state.orderState.orderSubCategoryState.subCategories,
-                stateToObserveForElement: store.state.orderState.orderSubCategoryState.subCategory
+              stateToObserveForList:
+                  store.state.orderState.orderSubCategoryState.subCategories,
+              stateToObserveForElement:
+                  store.state.orderState.orderSubCategoryState.subCategory,
             ),
             ReduxDropDownStoreConnector<Product>(
-                stateToObserveForList: store.state.orderState.orderProductState.products,
-                stateToObserveForElement: store.state.orderState.orderProductState.product
+              stateToObserveForList:
+                  store.state.orderState.orderProductState.products,
+              stateToObserveForElement:
+                  store.state.orderState.orderProductState.product,
             ),
-            */
-            StoreConnector<AppState, List<Category>>(
+            /*
+          StoreConnector<AppState, List<Category>>(
               distinct: false,
-              converter: (store) => store.state.orderState.orderCategoryState.categories,
-              builder: (BuildContext context, List<Category> categories){
+              converter: (store) =>
+                  store.state.orderState.orderCategoryState.categories,
+              builder: (BuildContext context, List<Category> categories) {
                 print("Categories -> " + categories.toString());
                 List<DropDownItem<Category>> _items = [];
                 for (Category category in categories) {
                   _items.add(DropDownItem(category.id, category.description));
                 }
                 print("list of items -> " + _items.toString());
-                return ReduxDropDownStateless<Category>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderCategoryState.category);
+                return ReduxDropDownStateless<Category>(
+                    dropDownItems: _items,
+                    preselectedItem: null,
+                    stateToObserve:
+                        store.state.orderState.orderCategoryState.category);
+              }),
+          StoreConnector<AppState, List<SubCategory>>(
+            distinct: false,
+            converter: (store) => store.state.orderState.orderSubCategoryState.subCategories,
+            builder: (BuildContext context, List<SubCategory> subCategories){
+              print("SubCategories -> " + subCategories.toString());
+              List<DropDownItem<SubCategory>> _items = [];
+              for (SubCategory subCategory in subCategories) {
+                _items.add(DropDownItem(subCategory.id, subCategory.description));
               }
-            ),
-            StoreConnector<AppState, List<SubCategory>>(
-              distinct: false,
-              converter: (store) => store.state.orderState.orderSubCategoryState.subCategories,
-              builder: (BuildContext context, List<SubCategory> subCategories){
-                print("SubCategories -> " + subCategories.toString());
-                List<DropDownItem<SubCategory>> _items = [];
-                for (SubCategory subCategory in subCategories) {
-                  _items.add(DropDownItem(subCategory.id, subCategory.description));
-                }
-                return ReduxDropDownStateless<SubCategory>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderSubCategoryState.subCategory);
+              return ReduxDropDownStateless<SubCategory>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderSubCategoryState.subCategory);
+            }
+          ),
+          StoreConnector<AppState, List<Product>>(
+            distinct: false,
+            converter: (store) => store.state.orderState.orderProductState.products,
+            builder: (BuildContext context, List<Product> products){
+              print("Products -> " + products.toString());
+              List<DropDownItem<Product>> _items = [];
+              for (Product product in products) {
+                _items.add(DropDownItem(product.id, product.description));
               }
-            ),
-            StoreConnector<AppState, List<Product>>(
-              distinct: false,
-              converter: (store) => store.state.orderState.orderProductState.products,
-              builder: (BuildContext context, List<Product> products){
-                print("Products -> " + products.toString());
-                List<DropDownItem<Product>> _items = [];
-                for (Product product in products) {
-                  _items.add(DropDownItem(product.id, product.description));
-                }
-                return ReduxDropDownStateless<Product>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderProductState.product);
-              }
-            )
+              return ReduxDropDownStateless<Product>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderProductState.product);
+            }
+          )
+          */
           ],
         ),
-      )
+      ),
     );
   }
-
 }

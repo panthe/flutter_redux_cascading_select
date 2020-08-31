@@ -8,7 +8,7 @@ class Category extends CascadingInterface {
   Category({
     this.id,
     this.description
-  });
+  }) : super(id,description);
 
   @override
   bool operator ==(Object other) =>

@@ -1,12 +1,17 @@
 // Packages
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_cascading_select/models/dropdown_item.dart';
 import 'package:flutter_redux_cascading_select/models/order/category.dart';
 import 'package:flutter_redux_cascading_select/models/order/product.dart';
 import 'package:flutter_redux_cascading_select/models/order/subcategory.dart';
 import 'package:flutter_redux_cascading_select/redux/app/app_state.dart';
 import 'package:flutter_redux_cascading_select/redux/keys.dart';
 import 'package:flutter_redux_cascading_select/redux/order/category/order_category_actions.dart';
+import 'package:flutter_redux_cascading_select/redux/order/category/order_category_vm.dart';
+import 'package:flutter_redux_cascading_select/redux/order/product/order_product_vm.dart';
+import 'package:flutter_redux_cascading_select/redux/order/subcategory/order_subcategory_vm.dart';
+import 'package:flutter_redux_cascading_select/widgets/redux_dropdown_stateless.dart';
 import 'package:flutter_redux_cascading_select/widgets/redux_dropdown_store_connector.dart';
 
 class Home extends StatefulWidget {
@@ -46,26 +51,12 @@ class _HomeState extends State<Home> {
               before the selection and change to null after the dispatch of the
               action SetOrderCascadingId
             */
-
-            ReduxDropDownStoreConnector<Category>(
-              stateToObserveForList:
-                  store.state.orderState.orderCategoryState.categories,
-              stateToObserveForElement:
-                  store.state.orderState.orderCategoryState.category,
-            ),
-            ReduxDropDownStoreConnector<SubCategory>(
-              stateToObserveForList:
-                  store.state.orderState.orderSubCategoryState.subCategories,
-              stateToObserveForElement:
-                  store.state.orderState.orderSubCategoryState.subCategory,
-            ),
-            ReduxDropDownStoreConnector<Product>(
-              stateToObserveForList:
-                  store.state.orderState.orderProductState.products,
-              stateToObserveForElement:
-                  store.state.orderState.orderProductState.product,
-            ),
-            /*
+///*
+            ReduxDropDownStoreConnector<Category>(),
+            ReduxDropDownStoreConnector<SubCategory>(),
+            ReduxDropDownStoreConnector<Product>(),
+//*/
+/*
           StoreConnector<AppState, List<Category>>(
               distinct: false,
               converter: (store) =>
@@ -107,7 +98,7 @@ class _HomeState extends State<Home> {
               return ReduxDropDownStateless<Product>(dropDownItems: _items, preselectedItem: null, stateToObserve: store.state.orderState.orderProductState.product);
             }
           )
-          */
+*/
           ],
         ),
       ),

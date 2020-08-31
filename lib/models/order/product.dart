@@ -12,7 +12,7 @@ class Product extends CascadingInterface {
     this.idSubCategory,
     this.description,
     this.price
-  });
+  }): super(id,description);
 
   @override
   bool operator ==(Object other) =>

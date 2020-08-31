@@ -10,7 +10,7 @@ class SubCategory extends CascadingInterface {
     this.id,
     this.idCategory,
     this.description
-  });
+  }): super(id,description);
 
   @override
   bool operator ==(Object other) =>

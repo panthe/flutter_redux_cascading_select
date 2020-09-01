@@ -38,9 +38,9 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ReduxCascadingSelect<Category>(),
-            ReduxCascadingSelect<SubCategory>(),
-            ReduxCascadingSelect<Product>(),
+            ReduxCascadingSelect<Category>(store: store),
+            ReduxCascadingSelect<SubCategory>(store: store),
+            ReduxCascadingSelect<Product>(store: store),
           ],
         ),
       ),
